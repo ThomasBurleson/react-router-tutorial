@@ -20,7 +20,7 @@
     "strict": true,
     "paths": {
       "@mindspace/api": ["src/stores/_api/index.ts"],
-      "@mindspace/stores": ["src/stores/index.ts"]
+      "@mindspace/contacts": ["src/stores/contacts/index.ts"]
     },
     "types": ["vite/client", "vitest"]
   },

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Contact } from '@mindspace/stores';
+import { Contact } from '@mindspace/contacts';
 
 export type ContactListProps = {
   allContacts: Contact[];

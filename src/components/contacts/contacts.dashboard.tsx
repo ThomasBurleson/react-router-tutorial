@@ -1,13 +1,14 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigation } from 'react-router-dom';
 
-import { useContacts } from '@mindspace/stores';
+import { useContacts } from '@mindspace/contacts';
 import { ContactSearch, ContactList } from '.';
 
 /**
  * Render master-details view for Contacts
  */
 export function ContactsDashboard() {
-  const { allContacts, isLoading } = useContacts();
+  const { allContacts } = useContacts();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -16,7 +17,10 @@ export function ContactsDashboard() {
         <ContactSearch />
         <ContactList allContacts={allContacts} />
       </div>
-      <div id="detail" className={isLoading ? 'loading' : ''}>
+      <div
+        id="detail"
+        className={navigation.state === 'loading' ? 'loading' : ''}
+      >
         <Outlet />
       </div>
     </>

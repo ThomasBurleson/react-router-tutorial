@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Link, redirect, useParams } from 'react-router-dom';
-import { useContactByID, snapshot, Contact } from '@mindspace/stores';
+import { Form, redirect, useNavigate, useParams } from 'react-router-dom';
+import { useContactByID, api, Contact } from '@mindspace/contacts';
 
 type ActionParams = {
   request: any;
@@ -25,8 +25,7 @@ export async function onSubmit({ request, params }: ActionParams) {
     id: params.id === 'new' ? undefined : params.id,
   } as Contact;
 
-  const api = snapshot();
-  const saved = await api.save(contact);
+  const saved = await api().save(contact);
 
   return redirect(`/contacts/${saved.id}`);
 }
@@ -36,6 +35,7 @@ export async function onSubmit({ request, params }: ActionParams) {
  */
 export function ContactEditor() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [contact] = useContactByID(id || 'new');
 
   return contact ? (
@@ -82,9 +82,9 @@ export function ContactEditor() {
       </label>
       <p>
         <button type="submit">Save</button>
-        <Link to={`/contacts/${id}`}>
-          <button type="button">Cancel</button>
-        </Link>
+        <button type="button" onClick={() => navigate(-1)}>
+          Cancel
+        </button>
       </p>
     </Form>
   ) : null;

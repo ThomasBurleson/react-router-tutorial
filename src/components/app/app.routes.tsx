@@ -7,7 +7,9 @@ import {
 import { AppErrorPage } from './app.error';
 
 import { onSubmit as onEditSubmit } from '../contacts/contact.editor';
+
 import { ContactsDashboard, ContactDetails, ContactEditor } from '../contacts';
+import Welcome from '../contacts/contact.welcome';
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +17,10 @@ export const router = createBrowserRouter([
     element: <ContactsDashboard />,
     errorElement: <AppErrorPage />,
     children: [
+      {
+        index: true,
+        element: <Welcome />,
+      },
       {
         path: 'new',
         element: <ContactEditor />,

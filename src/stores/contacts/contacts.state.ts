@@ -10,6 +10,7 @@ import { StoreState } from '../_core';
  */
 export interface ContactsState extends StoreState {
   allContacts: Contact[];
+  searchQuery: string;
 }
 
 /**
@@ -25,7 +26,7 @@ export interface ContactsComputedState {
  */
 export interface ContactsAPI {
   // Contacts CRUD
-  loadAll: () => Promise<Contact[]>;
+  loadAll: (query?: string) => Promise<Contact[]>;
   makeNew: () => Promise<Contact>;
   findById: (id: string) => Promise<Contact | null>;
   save: (contact: Contact) => Promise<Contact>;

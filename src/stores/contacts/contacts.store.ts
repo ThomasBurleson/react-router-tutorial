@@ -41,6 +41,7 @@ const ACTIONS = {
 const initState = (): ContactsState => ({
   ...initStoreState(),
   allContacts: [],
+  searchQuery: '',
 });
 
 // *******************************************************************
@@ -87,11 +88,14 @@ export function buildContactsStore(): StoreApi<ContactsViewModel> {
     const computed = buildComputedFn(data);
 
     const api: ContactsAPI = {
-      loadAll: async () => {
+      loadAll: async (query?: string) => {
+        const { searchQuery } = get();
+        if (query === searchQuery) return get().allContacts;
+
         const allContacts = await trackStatus<Contact[]>(() =>
           waitFor(ACTIONS.loadAll(), async () => {
-            const allContacts = await getContacts();
-            return { allContacts };
+            const allContacts = await getContacts(query);
+            return { allContacts, searchQuery: query || '' };
           })
         );
 
@@ -162,8 +166,40 @@ export function buildContactsStore(): StoreApi<ContactsViewModel> {
 
 let _store: StoreApi<ContactsViewModel>;
 
-export const store = () => (_store ||= buildContactsStore());
+export const store = () => {
+  if (!_store) {
+    _store = buildContactsStore();
+    syncUrlWithStore(_store);
+  }
 
-export const snapshot = (): ContactsViewModel => {
+  return _store;
+};
+
+export const api = (): ContactsAPI => {
   return store().getState();
+};
+
+// *******************************************************************
+// Bookmark URL Synchronizer
+// *******************************************************************
+
+const syncUrlWithStore = (_store: StoreApi<ContactsViewModel>) => {
+  // On app startup, determine if we have a search query in the URL
+  const { searchParams } = new URL(document.location.href);
+  const searchQuery = searchParams.get('q');
+  if (searchQuery) {
+    _store.getState().loadAll(searchQuery);
+  }
+
+  // Whenever the searchQuery changes, update the URL
+  _store.subscribe((state) => {
+    const { searchQuery } = state;
+    const { searchParams } = new URL(document.location.href);
+
+    if (searchQuery) searchParams.set('q', searchQuery);
+    else searchParams.delete('q');
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+  });
 };

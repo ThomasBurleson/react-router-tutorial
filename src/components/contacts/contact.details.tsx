@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { Form, useParams } from 'react-router-dom';
-import { Contact, useContactByID } from '@mindspace/stores';
+import { Contact, useContactByID } from '@mindspace/contacts';
 
 export function ContactDetails() {
   const { id } = useParams();
