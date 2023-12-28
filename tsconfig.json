@@ -13,14 +13,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
     "jsx": "react-jsx",
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "paths": {
+      "@mindspace/api": ["src/stores/_api/index.ts"],
+      "@mindspace/stores": ["src/stores/index.ts"]
+    },
     "types": ["vite/client", "vitest"]
   },
+
   "files": [],
   "include": [],
   "references": [
