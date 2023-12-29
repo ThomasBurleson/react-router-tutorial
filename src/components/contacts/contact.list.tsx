@@ -17,7 +17,14 @@ export const ContactList: React.FC<ContactListProps> = ({ allContacts }) => {
                 className={({ isActive, isPending }) =>
                   isActive ? 'active' : isPending ? 'pending' : ''
                 }
-              >{`${contact.first} ${contact.last}`}</NavLink>
+              >
+                {`${contact.first} ${contact.last}`}
+                {contact.favorite && (
+                  <span role="img" aria-label="Is Favorite">
+                    ⭐
+                  </span>
+                )}
+              </NavLink>
             </li>
           ))}
         </ul>

@@ -33,6 +33,9 @@ import {
 // initializers
 // *******************************************************************
 
+/**
+ * These ACTIONS enable waitFor() to look up existing, async request (if any)
+ */
 const ACTIONS = {
   loadAll: () => 'contacts:loadAll',
   findById: (id: string) => `contacts:findById:${id}`,
@@ -115,13 +118,17 @@ export function buildContactsStore(): StoreApi<ContactsViewModel> {
         );
         return contact;
       },
-      save: async (contact: Contact) => {
-        if (contact.id === 'new') contact.id = '';
-        const updated = await updateContact(contact);
-        set((state: ContactsState) => {
-          const allContacts = upsert(updated, state.allContacts);
+      save: async (contact: Contact, optimistic = false) => {
+        const saveEntity = (it: Contact) => (state: ContactsState) => {
+          const allContacts = upsert(it, state.allContacts);
           return { allContacts };
-        });
+        };
+
+        if (contact.id === 'new') contact.id = '';
+        if (optimistic) set(saveEntity(contact));
+
+        const updated = await updateContact(contact);
+        set(saveEntity(updated));
         return updated;
       },
       delete: async (contact: Contact) => {

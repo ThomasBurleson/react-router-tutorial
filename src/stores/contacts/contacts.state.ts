@@ -29,7 +29,7 @@ export interface ContactsAPI {
   loadAll: (query?: string) => Promise<Contact[]>;
   makeNew: () => Promise<Contact>;
   findById: (id: string) => Promise<Contact | null>;
-  save: (contact: Contact) => Promise<Contact>;
+  save: (contact: Contact, optimistic?: boolean) => Promise<Contact>;
   delete: (contact: Contact) => Promise<boolean>;
 }
 

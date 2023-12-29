@@ -7551,6 +7551,15 @@
         "hash": "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="
       }
     },
+    "npm:rxjs": {
+      "type": "npm",
+      "name": "npm:rxjs",
+      "data": {
+        "version": "7.8.1",
+        "packageName": "rxjs",
+        "hash": "sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg=="
+      }
+    },
     "npm:safe-array-concat": {
       "type": "npm",
       "name": "npm:safe-array-concat",
@@ -8680,6 +8689,11 @@
       {
         "source": "react-router-tutorial",
         "target": "npm:react-router-dom",
+        "type": "static"
+      },
+      {
+        "source": "react-router-tutorial",
+        "target": "npm:rxjs",
         "type": "static"
       },
       {
@@ -17991,6 +18005,13 @@
       {
         "source": "npm:run-parallel",
         "target": "npm:queue-microtask",
+        "type": "static"
+      }
+    ],
+    "npm:rxjs": [
+      {
+        "source": "npm:rxjs",
+        "target": "npm:tslib",
         "type": "static"
       }
     ],

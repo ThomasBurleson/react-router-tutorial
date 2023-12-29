@@ -12,6 +12,11 @@ export function ContactDetails() {
     }
     event.preventDefault();
   };
+  const onToggleFavorite = () => {
+    if (contact) {
+      api.save({ ...contact, favorite: !contact.favorite }, true);
+    }
+  };
 
   return contact ? (
     <div id="contact">
@@ -32,7 +37,7 @@ export function ContactDetails() {
           ) : (
             <i>No Name</i>
           )}{' '}
-          <Favorite contact={contact} />
+          <Favorite contact={contact} onChangeFavorite={onToggleFavorite} />
         </h1>
 
         {contact.twitter && (
@@ -61,19 +66,22 @@ export function ContactDetails() {
   ) : null;
 }
 
-type FavoriteProps = { contact: Contact };
-function Favorite({ contact }: FavoriteProps) {
-  // yes, this is a `let` for later
-  const favorite = contact.favorite;
+type FavoriteProps = { contact: Contact; onChangeFavorite?: () => void };
+export function Favorite({
+  contact: { favorite },
+  onChangeFavorite,
+}: FavoriteProps) {
+  onChangeFavorite = onChangeFavorite || (() => {});
+
   return (
-    <Form method="post">
-      <button
-        name="favorite"
-        value={favorite ? 'false' : 'true'}
-        aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
-      >
-        {favorite ? '★' : '☆'}
-      </button>
-    </Form>
+    <button
+      type="button"
+      name="favorite"
+      value={favorite ? 'false' : 'true'}
+      aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
+      onClick={onChangeFavorite}
+    >
+      {favorite ? '★' : '☆'}
+    </button>
   );
 }
