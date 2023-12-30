@@ -1,7 +1,8 @@
-import { Outlet, useNavigation } from 'react-router-dom';
+import { Route, Routes, useNavigation } from 'react-router-dom';
 
 import { useContacts } from '@mindspace/contacts';
-import { ContactSearch, ContactList } from '.';
+import { ContactSearch, ContactList, ContactDetails, ContactEditor } from '.';
+import Welcome from './contact.welcome';
 
 /**
  * Render master-details view for Contacts
@@ -21,7 +22,14 @@ export function ContactsDashboard() {
         id="detail"
         className={navigation.state === 'loading' ? 'loading' : ''}
       >
-        <Outlet />
+        {/* All routing for Contacts Dashboard */}
+        <Routes>
+          <Route index element={<Welcome />} />
+          <Route path="new" element={<ContactEditor />} />
+          <Route path=":id/edit" element={<ContactEditor />} />
+          <Route path=":id" element={<ContactDetails />} />
+          <Route path="*" element={<h1>Invalid Route</h1>} />
+        </Routes>
       </div>
     </>
   );
